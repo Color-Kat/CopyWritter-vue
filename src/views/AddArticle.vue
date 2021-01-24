@@ -18,6 +18,8 @@
         <br>
       </label>
 
+      <div v-if="error" class="error">Fill in all the fields!</div>
+
       <button type="submit">Share!</button>
     </form>
   </div>
@@ -25,15 +27,47 @@
 
 <script lang="ts">
 import {Vue, Component, Watch} from 'vue-property-decorator';
+import {getModule} from 'vuex-module-decorators'
+import {namespace, Action} from 'vuex-class';
+import articles from "@/store/modules/articles";
+
+// const articles = namespace('articles');
+
+
+interface IArticle {
+	nickname: string;
+	title: string;
+    text: string;
+    id: number;
+}
 
 @Component
 export default class AddArticle extends Vue {
     nickname: string = '';
     title: string = '';
     text: string = '';
+    error: boolean = false;
 
-    submitHandler(): void {
-        console.log(this.title);
+    articles = getModule(articles, this.$store);
+    // articles = getModule(Articles, this.$store);
+
+    // @articles.Action('updateArticles') updateArticles;
+    // @articles.Action
+    // public updateArticles!: (newArticle: IArticle) => void;
+
+    // @articles.Getter
+    // public getAllArticles: (id: number) => IArticle;
+
+    async submitHandler(): Promise<any> {
+        // console.log(module);
+        this.error = !await this.articles.updateArticles({
+            nickname: this.nickname,
+            title: this.title,
+            text: this.text,
+            id: Date.now()
+        });
+
+        this.$router.push('/');
     }
 
 }
