@@ -59,15 +59,16 @@ export default class AddArticle extends Vue {
     // public getAllArticles: (id: number) => IArticle;
 
     async submitHandler(): Promise<any> {
+        let id = Date.now();
         // console.log(module);
         this.error = !await this.articles.updateArticles({
             nickname: this.nickname,
             title: this.title,
             text: this.text,
-            id: Date.now()
+            id
         });
 
-        this.$router.push('/');
+        this.$router.push('/articles/' + id);
     }
 
 }

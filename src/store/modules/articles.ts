@@ -33,5 +33,12 @@ class Articles extends VuexModule {
 			.filter(t => t.title != "" && t.text != "" && t.nickname != "")
 			.reverse();
 	}
+
+	public get getArticleById () {
+		return (id: number): IArticle | undefined => {
+			return this.articles.find(t => t.id == id);
+		};
+	}
 }
+
 export default Articles;
