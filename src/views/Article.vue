@@ -1,10 +1,13 @@
 <template>
-    <div id="article">
+    <div id="article" v-if="article">
         <h1>{{article.title}}</h1>
         <h5>{{article.nickname}}</h5>
         <div class="text">
             {{article.text}}
         </div>
+    </div>
+    <div v-else>
+        wrong  id!
     </div>
 </template>
 
@@ -23,6 +26,6 @@ interface IArticle {
 @Component
 export default class ArticlesComponent extends Vue{
     articlesModule = getModule(articles, this.$store);
-    article: IArticle = (this.articlesModule.getArticleById)(this.$route.params.id);
+    article: IArticle | undefined = (this.articlesModule.getArticleById)(+this.$route.params.id);
 }
 </script>
