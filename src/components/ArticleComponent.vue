@@ -2,11 +2,11 @@
     <div id="articles">
         <h1>New articles</h1>
         <router-link
-            :to="'/articles/' + article.id" 
             tag="div"
             class="article"
             v-for="article of articles"
             :key="article.id"
+            :to="'/articles/' + article.id" 
         >
             <h2>{{article.title}}</h2>
             <h6>{{article.nickname}}</h6>
@@ -19,8 +19,7 @@
 
 <script lang="ts">
 import {Vue, Component} from 'vue-property-decorator';
-import {getModule} from 'vuex-module-decorators'
-import articles from "@/store/modules/articles";
+import {articlesMapper} from "@/store/modules/articles.ts";
 
 interface IArticle {
 	nickname: string;
@@ -29,13 +28,19 @@ interface IArticle {
 	id: number;
 }
 
-@Component
+@Component ({
+    computed: articlesMapper.mapGetters(['getAllArticles'])
+})
 export default class ArticlesComponent extends Vue{
-    articlesModule = getModule(articles, this.$store);
-    articles: IArticle[] = this.articlesModule.getAllArticles;
+    getAllArticles: IArticle[];
+    public articles: IArticle[] = [];
 
     cropText(str: string): string {
         return str.slice(0, 128) + '...';
+    }
+
+    mounted() {
+        this.articles = this.getAllArticles
     }
 }
 </script>

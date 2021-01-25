@@ -6,15 +6,16 @@ Vue.use(VueRouter);
 
 const routes: RouteConfig[] = [
 	{
-		path: "/add-article",
-		name: "AddArticle",
-		component: () => import("@/views/AddArticle.vue")
-	},
-	{
 		path: "/articles/:id",
 		name: "ReadArticle",
 		component: () => import("@/views/Article.vue")
 	},
+	{
+		path: "/add-article",
+		name: "AddArticle",
+		component: () => import("@/views/AddArticle.vue")
+	},
+
 	{
 		path: "/",
 		name: "Home",

@@ -13,8 +13,7 @@
 
 <script lang="ts">
 import {Vue, Component} from 'vue-property-decorator';
-import {getModule} from 'vuex-module-decorators'
-import articles from "@/store/modules/articles";
+import {articlesMapper} from "@/store/modules/articles";
 
 interface IArticle {
 	nickname: string;
@@ -23,9 +22,16 @@ interface IArticle {
 	id: number;
 }
 
-@Component
+@Component({
+    computed: articlesMapper.mapGetters(['getArticleById'])
+})
 export default class ArticlesComponent extends Vue{
-    articlesModule = getModule(articles, this.$store);
-    article: IArticle | undefined = (this.articlesModule.getArticleById)(+this.$route.params.id);
+    // articlesModule = getModule(articles, this.$store);
+    getArticleById: (id: number)=> IArticle | undefined;
+    public article: IArticle | undefined | {} = {};
+
+    mounted() {
+        this.article = this.getArticleById(+this.$route.params.id);
+    }
 }
 </script>

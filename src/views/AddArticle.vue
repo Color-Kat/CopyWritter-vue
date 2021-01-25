@@ -27,12 +27,7 @@
 
 <script lang="ts">
 import {Vue, Component, Watch} from 'vue-property-decorator';
-import {getModule} from 'vuex-module-decorators'
-import {namespace, Action} from 'vuex-class';
-import articles from "@/store/modules/articles";
-
-// const articles = namespace('articles');
-
+import {articlesMapper} from "@/store/modules/articles.ts";
 
 interface IArticle {
 	nickname: string;
@@ -41,36 +36,31 @@ interface IArticle {
     id: number;
 }
 
-@Component
+@Component({
+    methods: articlesMapper.mapActions({
+        updateArticles: 'updateArticles'
+    })
+})
 export default class AddArticle extends Vue {
     nickname: string = '';
     title: string = '';
     text: string = '';
     error: boolean = false;
 
-    articles = getModule(articles, this.$store);
-    // articles = getModule(Articles, this.$store);
-
-    // @articles.Action('updateArticles') updateArticles;
-    // @articles.Action
-    // public updateArticles!: (newArticle: IArticle) => void;
-
-    // @articles.Getter
-    // public getAllArticles: (id: number) => IArticle;
-
     async submitHandler(): Promise<any> {
         let id = Date.now();
         // console.log(module);
-        this.error = !await this.articles.updateArticles({
+        this.error = !await this.updateArticles({
             nickname: this.nickname,
             title: this.title,
             text: this.text,
             id
         });
 
-        this.$router.push('/articles/' + id);
+        // if (!this.error) {
+        //     this.$router.push('/articles/' + id);
+        // }
     }
-
 }
 </script>
 
