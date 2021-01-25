@@ -57,9 +57,9 @@ export default class AddArticle extends Vue {
             id
         });
 
-        // if (!this.error) {
-        //     this.$router.push('/articles/' + id);
-        // }
+        if (!this.error) {
+            this.$router.push('/');
+        }
     }
 }
 </script>
